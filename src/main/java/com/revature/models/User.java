@@ -12,12 +12,17 @@ public class User {
 		super();
 		username = "GuestUser";
 		userType = "Guest";
+		activeAcct = "";
+		accountIDs = new ArrayList<String>();
 	}
 	
 	public User(String uname, String type) {
 		super();
 		username = uname;
 		userType = type;
+		activeAcct = "";
+		//TEMP BELOW, pull actual connected IDs from Ownership table
+		accountIDs = new ArrayList<String>();
 	}
 	
 	public String getName() {
@@ -39,40 +44,19 @@ public class User {
 	
 	public String setActive(String changeTo) {
 		if(!accountIDs.contains(changeTo)) {
-			
+			activeAcct = changeTo;
+			return changeTo;
+		}
+		else{
+			System.out.println("You do not have access to the account you entered.");
+			return "";
 		}
 	}
 	
-	public int getBalance(String acctID) {
+	public int getBalance() {
 		int bal = 0;
-		//Grab bal from acctID in DB
+		//Grab bal from activeAcct in DB
 		return bal;
-	}
-	
-	public boolean alterBalance(char action, int amount, String acctID) {
-		switch(action) {
-		case 'W':
-			if (amount < 0) {
-				System.out.println("Can't withdraw a negative amount");
-				return false;
-			}
-			else if (amount > getBalance(acctID)) {
-				System.out.println("Can't withdraw more money than exists in account");
-				return false;
-			}
-			//Connect to SQL acct table, add amount to acctID
-			break;
-		case 'D':
-			if (amount < 0) {
-				System.out.println("Can't deposit a negative amount");
-			}
-			//Connect to SQL acct table, subtract amount from acctID
-			break;
-		default:
-			return false;
-		}
-			
-		return true;
 	}
 	
 	//Applies for a new account, will start closed

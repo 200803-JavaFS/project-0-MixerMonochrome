@@ -1,10 +1,12 @@
 package com.revature;
 
 import java.util.*;
+
 import com.revature.models.*;
 
 public class bankPortal {
 	
+
 	//Method to login
 	public static User login(Scanner sin) {
 		//System.out.println("Gets to Log In!");
@@ -26,7 +28,7 @@ public class bankPortal {
 			//}
 			//else {
 				//Grab User Info, for now placeholder guy
-			    dudeGuy = new User();
+			    dudeGuy = new User(potentUse,"C");
 			//}
 		}while(propInput == false);
 		return dudeGuy;
@@ -55,42 +57,185 @@ public class bankPortal {
 		return newbie;
 	}
 	
+	//Method to Logout
+	
+	//Changes the balance of a given account based on user u's active account
+	//based on their permissions
+	public static boolean alterBalance(char action, int amount, User curUse) {
+		switch(action) {
+		case 'W':
+			if (amount < 0) {
+				System.out.println("Can't withdraw a negative amount");
+				return false;
+			}
+			else if (amount > curUse.getBalance()) {
+				System.out.println("Can't withdraw more money than exists in account");
+				return false;
+			}
+			//Connect to SQL acct table, add amount to acctID
+			break;
+		case 'D':
+			if (amount < 0) {
+				System.out.println("Can't deposit a negative amount");
+			}
+			//Connect to SQL acct table, subtract amount from acctID
+			break;
+		default:
+			return false;
+		}
+			
+		return true;
+	}
+	
+	//Customer: 
+	  //Account Transactions
+	    //Withdraw
+	    //Deposit
+	    //Transfer
+	  //Existing Accounts
+	  //Switch Accounts
+	  //New Account
+	  //Give Account Access
+	public static void custMenu(User curUse,Scanner sin) {
+		String check = "";
+		boolean propInput = true;
+		boolean loop = true;
+		
+		while(loop) {
+			//base menu
+			System.out.println("CUSTOMER MENU:");
+			System.out.println();
+			System.out.println("[1] Account Transactions");
+			System.out.println("[2] Existing Accounts");
+			System.out.println("[3] Switch Accounts");
+			System.out.println("[4] New Account");
+			System.out.println("[5] Give Account Access");
+			System.out.println("[6] Logout");
+			System.out.println();
+			System.out.println("Enter the action you'd like to perform:");
+		
+			//make choice
+			do {
+				propInput = true;
+				check = sin.nextLine();
+				switch(check) {
+				case "1":
+					break;
+				case "2":
+					
+					break;
+				case "3":
+					break;
+				case "4":
+					break;
+				case "5":
+					break;
+				case "6":
+					loop = false;
+					propInput = false;
+					break;
+				default:
+					System.out.println("Invalid Command. Enter a number 1-6: ");
+					propInput = false;
+				}
+			}while(propInput == false);
+		}
+	}
+	
+	//Employee: 
+	  //Customers
+	    //Select Customer Info
+	      //Customer Username
+	      //Customer Password(?)
+	      //Customer Accounts
+	        //Account Info (Give Account Number)
+	  //Current Applications
+	public static void emplMenu(User curUse,Scanner sin) {
+		
+	}
+	
+	//Admin:
+	  //Employee Menu
+	  //+
+	      //Customer Accounts
+	        //Account Info (Give Account Number)
+	        //Change Account Balance (Give Account Number)
+	          //Withdraw
+	          //Deposit
+	          //Transfer
+	        //Cancel Account (Give Account Number)
+	public static void admnMenu(User curUse,Scanner sin) {
+		
+	}
+	
 	//Main function
 	public static void main(String[] args) {
 		//VARIABLES GO HERE
-		int intDec = 0;
 		String strDec = "";
 		boolean properInput = true;
+		User curUse = new User();
+		boolean loop = true;
 		
 		//Open scanner for keyboard input
 		Scanner sin = new Scanner(System.in);
 		
-		//Startup Messages
-		System.out.println("Hello! Welcome to [NAME] Banking");
-		System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
+		//
+		while(loop) {
+			//Startup Messages
+			System.out.println("Hello! Welcome to [NAME] Banking");
+			System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
+			
+			//Login/Sign up section
+			do {
+				properInput = true;
+				strDec = sin.nextLine();
+				//Proceed to Log-in
+				if(strDec.equals("1")) {
+					curUse = login(sin);
+				}
+				//Proceed to Sign-up
+				else if(strDec.equals("2")){
+					curUse = signup(sin);
+				}
+				//Incorrect Input
+				else {
+					System.out.println("Invalid Input (Must Enter 1 or 2).");
+					System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
+					properInput = false;
+				}
+			}while(properInput == false);
 		
-		do {
-			properInput = true;
-			intDec = sin.nextInt();
-			//Proceed to Log-in
-			if(intDec == 1) {
-				sin.nextLine();
-				login(sin);
+			//Pull up Menu based on User Type (Different Methods?)
+			System.out.println();
+			String perm = curUse.getType();
+			switch (perm) {
+			case "C":
+				custMenu(curUse,sin);
+				break;
+			case "E":
+				emplMenu(curUse,sin);
+				break;
+			case "A":
+				admnMenu(curUse,sin);
+				break;
+			default:
+				System.out.println("??? Something went Very Wrong");
+				System.exit(1);
 			}
-			//Proceed to Sign-up
-			else if(intDec == 2){
-				sin.nextLine();
-				signup(sin);
+			
+			System.out.println();
+		    System.out.print("Signed out.");
+		    System.out.println();
+		    System.out.println("Would you like to sign in as a different user [1] or Exit the application [Anything else]?");
+			strDec = sin.nextLine();
+			
+			if(strDec.equals("1")) {
+				curUse = new User();
 			}
-			//Incorrect Input
 			else {
-				System.out.println("Invalid Input (Must Enter 1 or 2).");
-				System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
-				properInput = false;
+				loop = false;
 			}
-		}while(properInput == false);
-		
-		
+		}
 		
 		sin.close();
 	}
