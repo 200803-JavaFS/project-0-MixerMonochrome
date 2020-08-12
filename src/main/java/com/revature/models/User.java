@@ -5,28 +5,32 @@ import java.util.*;
 public class User {
 	private String username;
 	private String userType;
-	private ArrayList<String> accountIDs;
-	private String activeAcct;
+	private ArrayList<Account> accounts;
+	private Account activeAcct;
 	
 	public User(){
 		super();
 		username = "GuestUser";
 		userType = "Guest";
-		activeAcct = "";
-		accountIDs = new ArrayList<String>();
+		activeAcct = new Account();
+		accounts = new ArrayList<Account>();
 	}
 	
 	public User(String uname, String type) {
 		super();
 		username = uname;
 		userType = type;
-		activeAcct = "";
+		activeAcct = new Account();
 		//TEMP BELOW, pull actual connected IDs from Ownership table
-		accountIDs = new ArrayList<String>();
+		accounts = new ArrayList<Account>();
 	}
 	
 	public String getName() {
 		return username;
+	}
+	
+	public void setName(String username) {
+		this.username = username;
 	}
 	
 	
@@ -34,43 +38,25 @@ public class User {
 		return userType;
 	}
 	
-	public ArrayList<String> getAccts(){
-		return accountIDs;
+	public void setType(String type) {
+		userType = type;
 	}
 	
-	public String getActive() {
+	public ArrayList<Account> getAccts(){
+		return accounts;
+	}
+	
+	public void setAccts(ArrayList<Account> accounts){
+		this.accounts = accounts;
+		
+	}
+	
+	public Account getActive() {
 		return activeAcct;
 	}
 	
-	public String setActive(String changeTo) {
-		if(!accountIDs.contains(changeTo)) {
-			activeAcct = changeTo;
-			return changeTo;
-		}
-		else{
-			System.out.println("You do not have access to the account you entered.");
-			return "";
-		}
-	}
-	
-	public int getBalance() {
-		int bal = 0;
-		//Grab bal from activeAcct in DB
-		return bal;
-	}
-	
-	//Applies for a new account, will start closed
-	public int applyForNew(){
-		//Inserts a new row into Account table where available
-		//Initializes with zero balance
-		return 0;
-	}
-	
-	//Applies for another user to have access to an existing account, 
-	public boolean applyToShare(String username, String acctID) {
-		//Adds row to Ownership table with userID to acctID.
-		//if acctID type is Single, change to joint
-		return true;
+	public void setActive(Account changeTo) {
+		activeAcct = changeTo;
 	}
 	
 }
