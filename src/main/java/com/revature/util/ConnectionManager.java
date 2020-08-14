@@ -1,4 +1,4 @@
-package com.revature.models;
+package com.revature.util;
 
 import java.sql.*;
 public class ConnectionManager {
@@ -11,7 +11,7 @@ public class ConnectionManager {
 			e.printStackTrace();
 		}
 		
-		String url = "jdbc:postgresql://databases.c2ga2loul9ng.us-east-2.rds.amazonaws.com:5432/demos";
+		String url = "jdbc:postgresql://databases.c2ga2loul9ng.us-east-2.rds.amazonaws.com:5432/Proj0";
 		String username = "imhere";
 		String password = "oneforall"; 
 		

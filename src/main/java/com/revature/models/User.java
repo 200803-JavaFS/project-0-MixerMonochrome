@@ -15,7 +15,7 @@ public class User implements Serializable{
 	private String phoneNumber;
 	private String address;
 	private int numAccounts;
-	private ArrayList<String> accounts;
+	private ArrayList<Integer> accounts;
 	private Account activeAcct;
 	
 	public User(){
@@ -32,7 +32,7 @@ public class User implements Serializable{
 	}
 	
 	public User(String username, String userType, String firstName, String lastName, String phoneNumber, 
-			String address, int numAccounts, ArrayList<String> accounts) {
+			String address, int numAccounts, ArrayList<Integer> accounts) {
 		super();
 		this.username = username;
 		this.userType = userType;
@@ -76,11 +76,11 @@ public class User implements Serializable{
 		userType = type;
 	}
 	
-	public ArrayList<String> getAccts(){
+	public ArrayList<Integer> getAccts(){
 		return accounts;
 	}
 	
-	public void setAccts(ArrayList<String> accounts){
+	public void setAccts(ArrayList<Integer> accounts){
 		this.accounts = accounts;
 		
 	}
