@@ -116,7 +116,7 @@ public class ServiceTime {
 	private void printAccts(ArrayList<Account> bleh) {
 		System.out.println();
 		for (Account a : bleh) {
-			a.toString();
+			System.out.println(a.toString());
 		}
 		System.out.println();
 	}
@@ -124,7 +124,7 @@ public class ServiceTime {
 	private void printUsers(ArrayList<User> customers) {
 		System.out.println();
 		for (User u : customers) {
-			u.toString();
+			System.out.println(u.toString());
 		}
 		System.out.println();
 	}
@@ -272,7 +272,42 @@ public class ServiceTime {
 					break;
 				case "4": // New Accounts
 					// Ask if solo or joint account
+					System.out.println(
+							"Would you like to create a solo account [S] or a joint account [J]? (Type anything else to exit)");
+					check = sin.nextLine().toUpperCase();
+					if (!check.equals("S") && !check.equals("J")) {
+						break;
+					}
+
 					// Place new acct in Account table with closed status and balance 0
+					to = new Account(check, 0, "O");
+					acctDAO.addAccount(to);
+					System.out.println("New account made with id " + to.getID());
+					ArrayList<Integer> temp = curUse.getAccts();
+					temp.add(to.getID());
+					curUse.setAccts(temp);
+					acctDAO.addUserAccess(to, curUse.getName());
+					if (check.equals("J")) {
+						System.out.println("Enter the username you'd like to share this account with.");
+						while (loop) {
+							check = sin.nextLine();
+							if (userDAO.userExists(check)) {
+								acctDAO.addUserAccess(to, check);
+							}
+							else {
+								System.out.println("User does not exist. Check spelling and remember usernames are case-sensitive.");
+							}
+							System.out.println("Would you like to add another user? [Y/*]");
+							check = sin.nextLine().toUpperCase();
+							if(check.equals("Y")) {
+								System.out.println("Enter the username you'd like to share this account with.");
+							}
+							else {
+								loop = false;
+							}
+						}
+						loop = true;
+					}
 					break;
 				case "5": // Give Account Access
 					System.out.println();
@@ -348,13 +383,14 @@ public class ServiceTime {
 						} else {
 							try {
 								aId = Integer.parseInt(check);
-							}catch(NumberFormatException e) {
+							} catch (NumberFormatException e) {
 								System.out.println("Invalid Account, please use only numbers");
 							}
 							if (acctDAO.accountExists(aId)) {
 								Account acct = acctDAO.getAccountByID(aId);
 								if (acct.getStatus().equals("O")) {
-									System.out.println("Would you like to [A] approve this account or [D] Deny this account?");
+									System.out.println(
+											"Would you like to [A] approve this account or [D] Deny this account?");
 									check = sin.nextLine();
 									if (check.toUpperCase().equals("A")) {
 										acct.setStatus("A");
@@ -363,13 +399,12 @@ public class ServiceTime {
 										acct.setStatus("D");
 										acctDAO.updateAccount(acct);
 									} else {
-									System.out.println("Invalid action. Returning to Account Selection.");
+										System.out.println("Invalid action. Returning to Account Selection.");
 									}
 								} else {
-								System.out.println("That account is not open for status change at this time.");
+									System.out.println("That account is not open for status change at this time.");
 								}
-							}
-							else {
+							} else {
 								System.out.println("Account does not exist");
 							}
 						}

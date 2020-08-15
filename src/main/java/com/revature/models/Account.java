@@ -25,6 +25,13 @@ public class Account implements Serializable{
 		this.status = status;
 	}
 	
+	public Account(String type, int balance, String status) {
+		super();
+		this.type = type;
+		this.balance = balance;
+		this.status = status;
+	}
+	
 	public int getID() {
 		return id;
 	}
@@ -94,5 +101,35 @@ public class Account implements Serializable{
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		String s = "Account number: " + id + ", Account Type: ";
+		if(type.equals("S")) {
+			s += "Solo, Account Balance: " + balance + ", Account Status: ";
+		}
+		else if(type.equals("J")) {
+			s += "Joint, Account Balance: " + balance + ", Account Status: " ;
+		}
+		else {
+			s += "ERROR, Account Balance: " + balance + ", Account Status: ";
+		}
+		
+		if(status.equals("O")) {
+			s += "Open (Pending)";
+		}
+		else if(status.equals("A")) {
+			s += "Approved";
+		}
+		else if(status.equals("D")) {
+			s += "Denied";
+		}
+		else if(status.equals("C")) {
+			s += "Closed";
+		}
+		else {
+			s += "Error, seriously how did this happen.";
+		}
+		return s;
+	}
 	
 }
