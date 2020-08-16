@@ -130,4 +130,23 @@ public class UserDAO implements IUserDAO {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean updateUser(User u) {
+		try(Connection conn = ConnectionManager.getConnection()){
+			String sql = "update Users set phone_num = ?, address = ?, num_accts=? where username = ?;";
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, u.getPhoneNumber());
+			statement.setString(2,  u.getAddress());
+			statement.setInt(3, u.getNumAccts());
+			statement.setString(4,u.getName());
+			statement.execute();
+			return true;
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 }

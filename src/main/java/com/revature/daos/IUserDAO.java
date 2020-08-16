@@ -9,4 +9,5 @@ public interface IUserDAO {
 	public User findUserByName(String u);
 	public boolean userExists(String u);
 	public boolean checkPass(String u, String p);
+	public boolean updateUser(User u);
 }

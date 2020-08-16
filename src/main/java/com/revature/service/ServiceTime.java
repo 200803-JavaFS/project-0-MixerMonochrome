@@ -267,8 +267,6 @@ public class ServiceTime {
 					} else {
 						System.out.println("You don't have access to this account");
 					}
-					check = "3";
-
 					break;
 				case "4": // New Accounts
 					// Ask if solo or joint account
@@ -279,7 +277,7 @@ public class ServiceTime {
 						break;
 					}
 
-					// Place new acct in Account table with closed status and balance 0
+					// Place new acct in Account table with pending status and balance 0
 					to = new Account(check, 0, "O");
 					acctDAO.addAccount(to);
 					System.out.println("New account made with id " + to.getID());
@@ -287,22 +285,23 @@ public class ServiceTime {
 					temp.add(to.getID());
 					curUse.setAccts(temp);
 					acctDAO.addUserAccess(to, curUse.getName());
+					curUse.setNumAccts(curUse.getNumAccts()+1);
+					userDAO.updateUser(curUse);
 					if (check.equals("J")) {
 						System.out.println("Enter the username you'd like to share this account with.");
 						while (loop) {
 							check = sin.nextLine();
 							if (userDAO.userExists(check)) {
 								acctDAO.addUserAccess(to, check);
-							}
-							else {
-								System.out.println("User does not exist. Check spelling and remember usernames are case-sensitive.");
+							} else {
+								System.out.println(
+										"User does not exist. Check spelling and remember usernames are case-sensitive.");
 							}
 							System.out.println("Would you like to add another user? [Y/*]");
 							check = sin.nextLine().toUpperCase();
-							if(check.equals("Y")) {
+							if (check.equals("Y")) {
 								System.out.println("Enter the username you'd like to share this account with.");
-							}
-							else {
+							} else {
 								loop = false;
 							}
 						}
@@ -395,9 +394,11 @@ public class ServiceTime {
 									if (check.toUpperCase().equals("A")) {
 										acct.setStatus("A");
 										acctDAO.updateAccount(acct);
+										accounts = acctDAO.getAccountsByStatus("O");
 									} else if (check.toUpperCase().equals("D")) {
 										acct.setStatus("D");
 										acctDAO.updateAccount(acct);
+										accounts = acctDAO.getAccountsByStatus("O");
 									} else {
 										System.out.println("Invalid action. Returning to Account Selection.");
 									}
@@ -434,6 +435,212 @@ public class ServiceTime {
 	// Transfer
 	// Cancel Account (Give Account Number)
 	public void admnMenu(User curUse, Scanner sin) {
+		String check = "";
+		boolean propInput = true;
+		boolean loop = true;
+		int amount = 0;
+		int aId = 0;
+		Account to;
+		ArrayList<Account> accounts = null;
+
+		while (loop) {
+			System.out.println("ADMIN MENU:");
+			System.out.println();
+			System.out.println("Enter the number of the action you want to perform: ");
+			System.out.println("[1] Inspect Customers");
+			System.out.println("[2] All Accounts");
+			System.out.println("[3] Switch Accounts");
+			System.out.println("[4] Account Actions");
+			System.out.println("[5] Inspect Applications");
+			System.out.println("[6] Logout");
+			System.out.println();
+
+			do {
+				propInput = true;
+				check = sin.nextLine();
+				switch (check) {
+				case "1":// Customers
+					ArrayList<User> users = userDAO.allCustomers();
+					if (!users.isEmpty()) {
+						printUsers(users);
+					} else {
+						System.out.println("No Customers :(");
+					}
+					break;
+				case "2"://All Accounts
+					accounts = acctDAO.allAccounts();
+					if(!accounts.isEmpty()) {
+						printAccts(accounts);
+					}
+					else {
+						System.out.println("No Accounts :(");
+					}
+					break;
+				case "3"://Switch Accounts
+					System.out.println();
+					System.out.println("What account would you like to switch to?");
+					try {
+						aId = Integer.parseInt(sin.nextLine());
+					} catch (NumberFormatException e) {
+						System.out.println("Invalid account, please use only numbers");
+					}
+					if(acctDAO.accountExists(aId)) {
+						curUse.setActive(acctDAO.getAccountByID(aId));
+					}
+					else {
+						System.out.println("Account " + aId + " does not exist.");
+					}
+					break;
+				case "4"://Account Actions
+					if (curUse.getActive() == null) {
+						System.out.println("You have not chosen an account to alter yet, please Switch Accounts first.");
+						break;
+					} else if (!curUse.getActive().getStatus().equals("A")) {
+						System.out.println("The chosen account is not approved for transactions.");
+						break;
+					}
+					while (loop) {
+						System.out.println();
+						System.out.println("Would you like to ");
+						System.out.println("[1] Withdraw");
+						System.out.println("[2] Deposit");
+						System.out.println("[3] Transfer");
+						System.out.println("[4] Cancel Account");
+						System.out.println("[5] Exit Account Actions");
+						System.out.println();
+
+						do {
+							propInput = true;
+							check = sin.nextLine();
+							switch (check) {
+							case "1": // Withdraw
+								System.out.println("How much would you like to withdraw?");
+								try {
+									amount = Integer.parseInt(sin.nextLine());
+								} catch (NumberFormatException e) {
+									System.out.println("Invalid amount, please use only numbers.");
+									break;
+								}
+								alterBalance('W', amount, curUse);
+								break;
+							case "2": // Deposit
+								System.out.println("How much would you like to deposit?");
+								try {
+									amount = Integer.parseInt(sin.nextLine());
+								} catch (NumberFormatException e) {
+									System.out.println("Invalid amount, please use only numbers.");
+									break;
+								}
+								alterBalance('D', amount, curUse);
+								break;
+							case "3": // Transfer
+								System.out.println("How much would you like to transfer?");
+								try {
+									amount = Integer.parseInt(sin.nextLine());
+								} catch (NumberFormatException e) {
+									System.out.println("Invalid amount, please use only numbers.");
+									break;
+								}
+								System.out.println("Account number you are transferring to");
+								try {
+									aId = Integer.parseInt(sin.nextLine());
+								} catch (NumberFormatException e) {
+									System.out.println("Invalid account number, please use only numbers.");
+								}
+								if (acctDAO.accountExists(aId)) {
+									to = acctDAO.getAccountByID(aId);
+									// Pull money from current account
+									alterBalance('W', amount, curUse);
+									// Save current account
+									Account from = curUse.getActive();
+									// Change to target account
+									curUse.setActive(to);
+									// Deposit to target account
+									alterBalance('D', amount, curUse);
+									// Revert to original account
+									curUse.setActive(from);
+								} else {
+									System.out.println("Account number " + aId + " does not exist.");
+								}
+								break;
+							case "4": //Close Account
+								if(!curUse.getActive().getStatus().equals("C")) {
+									System.out.println("Are you sure you want to close Account " + curUse.getActive().getID() + 
+										"? [Y] for yes, anything else for no.");
+									check = sin.nextLine().toUpperCase();
+									if(check.equals("Y")) {
+										curUse.getActive().setStatus("C");
+										acctDAO.updateAccount(curUse.getActive());
+									}
+								}
+								else {
+									System.out.println("Account is already closed.");
+								}
+								break;
+							case "5": // Exit Act Trnsctn
+								loop = false;
+								break;
+							default: // Invalid Command
+								System.out.println("Invalid Command. Enter a number 1-4: ");
+								propInput = false;
+							}
+						} while (propInput == false);
+						propInput = true;
+						check = "1";
+					}
+					loop = true;
+					break;
+				case "5":// Applications
+					accounts = acctDAO.getAccountsByStatus("O");
+					while (loop) {
+						printAccts(accounts);
+						System.out.println("Select Account (enter E to go back):");
+						check = sin.nextLine();
+						if (check.toUpperCase().equals("E")) {
+							loop = false;
+						} else {
+							try {
+								aId = Integer.parseInt(check);
+							} catch (NumberFormatException e) {
+								System.out.println("Invalid Account, please use only numbers.");
+							}
+							if (acctDAO.accountExists(aId)) {
+								curUse.setActive(acctDAO.getAccountByID(aId));
+								if (curUse.getActive().getStatus().equals("O")) {
+									System.out.println(
+											"Would you like to [A] approve this account or [D] Deny this account?");
+									check = sin.nextLine();
+									if (check.toUpperCase().equals("A")) {
+										curUse.getActive().setStatus("A");
+										acctDAO.updateAccount(curUse.getActive());
+										accounts = acctDAO.getAccountsByStatus("O");
+									} else if (check.toUpperCase().equals("D")) {
+										curUse.getActive().setStatus("D");
+										acctDAO.updateAccount(curUse.getActive());
+										accounts = acctDAO.getAccountsByStatus("O");
+									} else {
+										System.out.println("Invalid action.");
+									}
+								} else {
+									System.out.println("That account is not open for Approval/Denial.");
+								}
+							} else {
+								System.out.println("Account does not exist.");
+							}
+						}
+					}
+					loop = true;
+					break;
+				case "6":// Logout
+					loop = false;
+					break;
+				default:
+					System.out.println("Invalid Command. Enter a number 1-6");
+					propInput = false;
+				}
+
+			} while (propInput == false);
+		}
 
 	}
 }
