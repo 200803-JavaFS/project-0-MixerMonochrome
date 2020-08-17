@@ -2,6 +2,9 @@ package com.revature;
 
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 import com.revature.models.*;
@@ -9,13 +12,13 @@ import com.revature.service.ServiceTime;
 
 public class bankPortal {
 	//Main function
+	private static final Logger log = LogManager.getLogger(bankPortal.class); 
 	public static void main(String[] args) {
 		//VARIABLES GO HERE
-		
+		log.info("Start");
 		ServiceTime takeAction = new ServiceTime(AccountDAO.getAcctDAO(),UserDAO.getUserDAO());
-		String strDec = "";
-		boolean properInput = true;
-		User curUse = new User();
+		String strDec;
+		User curUse = null;
 		boolean loop = true;
 		
 		//Open scanner for keyboard input
@@ -25,39 +28,54 @@ public class bankPortal {
 		while(loop) {
 			//Startup Messages
 			System.out.println("Hello! Welcome to [NAME] Banking");
-			System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
 			
-			//Login/Sign up section
-			do {
-				properInput = true;
+			
+			do{
+				System.out.println("Would you like to Log In [1], Sign Up [2], or Exit[3]?:");
 				strDec = sin.nextLine();
 				//Proceed to Log-in
 				if(strDec.equals("1")) {
+					log.info("Enters Login");
 					curUse = takeAction.login(sin);
+					log.info("Exits Login");
 				}
 				//Proceed to Sign-up
 				else if(strDec.equals("2")){
+					log.info("Enters Signup");
 					curUse = takeAction.signup(sin);
+					log.info("Exits Signup");
+				}
+				else if(strDec.equals("3")){
+					log.info("App Closing");
+					System.out.println("Goodbye!");
+					return;
 				}
 				//Incorrect Input
 				else {
-					System.out.println("Invalid Input (Must Enter 1 or 2).");
-					System.out.println("Would you like to Log In [1] or Sign Up [2]?:");
-					properInput = false;
+					log.info("Invalid input entered at Start Screen");
+					System.out.println("Invalid Input (Must Enter 1, 2, or 3).");
+					System.out.println("Would you like to Log In [1], Sign Up [2], or Exit [3]?:");
 				}
-			}while(properInput == false);
+				if(curUse != null) {
+					log.info("Logged in as user " + curUse.getName());
+					break;
+				}
+			}while(true);
 		
 			//Pull up Menu based on User Type (Different Methods?)
 			System.out.println();
 			String perm = curUse.getType();
 			switch (perm) {
 			case "C":
+				log.info("Pulling up Customer Menu");
 				takeAction.custMenu(curUse,sin);
 				break;
 			case "E":
+				log.info("Pulling up Employee Menu");
 				takeAction.emplMenu(curUse,sin);
 				break;
 			case "A":
+				log.info("Pulling up Admin Menu");
 				takeAction.admnMenu(curUse,sin);
 				break;
 			default:
@@ -73,10 +91,12 @@ public class bankPortal {
 			strDec = sin.nextLine();
 			
 			if(strDec.equals("1")) {
-				curUse = new User();
+				curUse = null;
+				log.info("Restarting application logic.");
 			}
 			else {
 				loop = false;
+				log.info("App Closing");
 			}
 		}
 		

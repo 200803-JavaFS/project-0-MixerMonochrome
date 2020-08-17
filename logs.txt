@@ -1,0 +1,10 @@
+2020-08-17 18:10:33 INFO  bankPortal:18 - Start
+2020-08-17 18:11:02 INFO  bankPortal:38 - Enters Login
+2020-08-17 18:11:02 INFO  ServiceTime:27 - Login method entered
+2020-08-17 18:11:09 INFO  ServiceTime:38 - Checking credentials...
+2020-08-17 18:11:11 INFO  ServiceTime:40 - Match found!
+2020-08-17 18:11:12 INFO  ServiceTime:56 - Exiting login method
+2020-08-17 18:11:12 INFO  bankPortal:40 - Exits Login
+2020-08-17 18:11:12 INFO  bankPortal:60 - Logged in as user Groot
+2020-08-17 18:11:12 INFO  bankPortal:78 - Pulling up Admin Menu
+2020-08-17 18:24:50 INFO  bankPortal:18 - Start
