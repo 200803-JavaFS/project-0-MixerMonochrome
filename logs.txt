@@ -8,3 +8,130 @@
 2020-08-17 18:11:12 INFO  bankPortal:60 - Logged in as user Groot
 2020-08-17 18:11:12 INFO  bankPortal:78 - Pulling up Admin Menu
 2020-08-17 18:24:50 INFO  bankPortal:18 - Start
+2020-08-18 10:56:26 INFO  bankPortal:18 - Start
+2020-08-18 10:56:37 INFO  bankPortal:38 - Enters Login
+2020-08-18 10:56:37 INFO  ServiceTime:27 - Login method entered
+2020-08-18 10:56:41 INFO  ServiceTime:38 - Checking credentials...
+2020-08-18 10:56:43 INFO  ServiceTime:43 - No Match.
+2020-08-18 10:59:21 INFO  bankPortal:18 - Start
+2020-08-18 10:59:26 INFO  bankPortal:38 - Enters Login
+2020-08-18 10:59:26 INFO  ServiceTime:27 - Login method entered
+2020-08-18 10:59:40 INFO  ServiceTime:39 - Checking credentials...
+2020-08-18 10:59:42 INFO  ServiceTime:41 - Match found!
+2020-08-18 10:59:43 INFO  bankPortal:40 - Exits Login
+2020-08-18 10:59:43 INFO  bankPortal:60 - Logged in as user cuppa
+2020-08-18 10:59:43 INFO  bankPortal:70 - Pulling up Customer Menu
+2020-08-18 10:59:54 INFO  bankPortal:99 - App Closing
+2020-08-18 15:47:43 INFO  bankPortal:18 - Start
+2020-08-18 15:47:50 INFO  ServiceTime:27 - Login method entered
+2020-08-18 15:47:59 INFO  ServiceTime:38 - Checking credentials...
+2020-08-18 15:48:01 INFO  ServiceTime:40 - Match found!
+2020-08-18 15:48:02 INFO  bankPortal:39 - Exits Login
+2020-08-18 15:48:02 INFO  bankPortal:58 - Logged in as user Groot
+2020-08-18 15:48:02 INFO  bankPortal:76 - Pulling up Admin Menu
+2020-08-18 15:48:02 INFO  ServiceTime:582 - Enters admnMenu method
+2020-08-18 15:48:08 INFO  ServiceTime:604 - Chose Customers
+2020-08-18 15:48:10 INFO  ServiceTime:329 - Enters printUsers method
+2020-08-18 15:48:35 INFO  ServiceTime:615 - Chose All Accounts
+2020-08-18 15:48:35 INFO  ServiceTime:616 - Grabbing all accounts from Database
+2020-08-18 15:48:36 INFO  ServiceTime:320 - Enters printAccts method
+2020-08-18 15:50:36 INFO  ServiceTime:628 - Chose Switch Accounts
+2020-08-18 15:50:36 INFO  ServiceTime:222 - Entered switchAccount method
+2020-08-18 15:51:25 INFO  ServiceTime:242 - User is an admin, checking if account exists.
+2020-08-18 15:51:25 INFO  ServiceTime:244 - Grabbing account
+2020-08-18 15:51:34 INFO  ServiceTime:628 - Chose Switch Accounts
+2020-08-18 15:51:34 INFO  ServiceTime:222 - Entered switchAccount method
+2020-08-18 15:51:38 INFO  ServiceTime:242 - User is an admin, checking if account exists.
+2020-08-18 15:51:46 INFO  ServiceTime:632 - Chose Account Actions
+2020-08-18 15:51:46 INFO  ServiceTime:633 - Checks if User's getActive account
+2020-08-18 15:51:46 INFO  ServiceTime:642 - Enters Transaction Loop
+2020-08-18 15:52:51 INFO  ServiceTime:657 - Chose Withdraw
+2020-08-18 15:52:51 INFO  ServiceTime:118 - Enters callAlter method.
+2020-08-18 15:52:51 INFO  ServiceTime:124 - Setup for withdrawal.
+2020-08-18 15:52:59 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-18 15:52:59 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-18 15:52:59 INFO  ServiceTime:193 - Withdrawal failed.
+2020-08-18 15:52:59 INFO  ServiceTime:642 - Enters Transaction Loop
+2020-08-18 15:53:21 INFO  ServiceTime:686 - Chose Exit
+2020-08-18 15:53:32 INFO  ServiceTime:700 - Chose Applications
+2020-08-18 15:53:32 INFO  ServiceTime:259 - Enters approveDeny method
+2020-08-18 15:53:32 INFO  ServiceTime:263 - Grabs pending accounts from Database.
+2020-08-18 15:53:56 INFO  ServiceTime:704 - Chose Logout
+2020-08-18 15:54:04 INFO  bankPortal:93 - Restarting application logic.
+2020-08-18 15:54:13 INFO  ServiceTime:27 - Login method entered
+2020-08-18 15:54:18 INFO  ServiceTime:38 - Checking credentials...
+2020-08-18 15:54:18 INFO  ServiceTime:40 - Match found!
+2020-08-18 15:54:20 INFO  bankPortal:39 - Exits Login
+2020-08-18 15:54:20 INFO  bankPortal:58 - Logged in as user Gouda
+2020-08-18 15:54:20 INFO  bankPortal:68 - Pulling up Customer Menu
+2020-08-18 15:54:20 INFO  ServiceTime:347 - Enters custMenu method
+2020-08-18 15:54:20 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:54:28 INFO  ServiceTime:445 - Chose New Account
+2020-08-18 15:54:34 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:54:41 INFO  ServiceTime:423 - Chose Existing Accounts
+2020-08-18 15:54:42 INFO  ServiceTime:320 - Enters printAccts method
+2020-08-18 15:55:13 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:55:22 INFO  ServiceTime:441 - Chose Switch Accounts
+2020-08-18 15:55:22 INFO  ServiceTime:222 - Entered switchAccount method
+2020-08-18 15:55:27 INFO  ServiceTime:233 - User is a customer, checking if they have access to account they entered.
+2020-08-18 15:55:27 INFO  ServiceTime:235 - Grabbing account.
+2020-08-18 15:55:27 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:56:10 INFO  ServiceTime:373 - Chose Account Transactoins
+2020-08-18 15:56:10 INFO  ServiceTime:374 - Checks if User has chosen an account to perform transactions on, and if that account is active.
+2020-08-18 15:56:10 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:56:22 INFO  ServiceTime:505 - Chose Logout
+2020-08-18 15:56:26 INFO  bankPortal:93 - Restarting application logic.
+2020-08-18 15:56:28 INFO  ServiceTime:27 - Login method entered
+2020-08-18 15:56:31 INFO  ServiceTime:38 - Checking credentials...
+2020-08-18 15:56:32 INFO  ServiceTime:40 - Match found!
+2020-08-18 15:56:32 INFO  bankPortal:39 - Exits Login
+2020-08-18 15:56:32 INFO  bankPortal:58 - Logged in as user Groot
+2020-08-18 15:56:32 INFO  bankPortal:76 - Pulling up Admin Menu
+2020-08-18 15:56:32 INFO  ServiceTime:582 - Enters admnMenu method
+2020-08-18 15:56:36 INFO  ServiceTime:700 - Chose Applications
+2020-08-18 15:56:36 INFO  ServiceTime:259 - Enters approveDeny method
+2020-08-18 15:56:36 INFO  ServiceTime:263 - Grabs pending accounts from Database.
+2020-08-18 15:56:37 INFO  ServiceTime:320 - Enters printAccts method
+2020-08-18 15:56:44 INFO  ServiceTime:278 - Checking entered account is actually a number.
+2020-08-18 15:56:44 INFO  ServiceTime:285 - Checking if entered account exists.
+2020-08-18 15:56:45 INFO  ServiceTime:287 - Retrieving account
+2020-08-18 15:56:45 INFO  ServiceTime:289 - Double check account 2 is pending
+2020-08-18 15:56:53 INFO  ServiceTime:296 - Updating account status to Approved in Database
+2020-08-18 15:56:53 INFO  ServiceTime:298 - Updating pending accounts list
+2020-08-18 15:56:59 INFO  ServiceTime:704 - Chose Logout
+2020-08-18 15:57:02 INFO  bankPortal:93 - Restarting application logic.
+2020-08-18 15:57:05 INFO  ServiceTime:27 - Login method entered
+2020-08-18 15:57:13 INFO  ServiceTime:38 - Checking credentials...
+2020-08-18 15:57:14 INFO  ServiceTime:40 - Match found!
+2020-08-18 15:57:16 INFO  bankPortal:39 - Exits Login
+2020-08-18 15:57:16 INFO  bankPortal:58 - Logged in as user Gouda
+2020-08-18 15:57:16 INFO  bankPortal:68 - Pulling up Customer Menu
+2020-08-18 15:57:16 INFO  ServiceTime:347 - Enters custMenu method
+2020-08-18 15:57:16 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:57:20 INFO  ServiceTime:441 - Chose Switch Accounts
+2020-08-18 15:57:20 INFO  ServiceTime:222 - Entered switchAccount method
+2020-08-18 15:57:25 INFO  ServiceTime:233 - User is a customer, checking if they have access to account they entered.
+2020-08-18 15:57:25 INFO  ServiceTime:235 - Grabbing account.
+2020-08-18 15:57:26 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:57:28 INFO  ServiceTime:373 - Chose Account Transactoins
+2020-08-18 15:57:28 INFO  ServiceTime:374 - Checks if User has chosen an account to perform transactions on, and if that account is active.
+2020-08-18 15:57:28 INFO  ServiceTime:383 - Top of Transaction Loop
+2020-08-18 15:57:33 INFO  ServiceTime:405 - Chose Transfer
+2020-08-18 15:57:33 INFO  ServiceTime:118 - Enters callAlter method.
+2020-08-18 15:57:33 INFO  ServiceTime:132 - Setup for transfer
+2020-08-18 15:57:39 INFO  ServiceTime:157 - Checking if account 1 exists.
+2020-08-18 15:57:39 INFO  ServiceTime:159 - Account exists.
+2020-08-18 15:57:39 INFO  ServiceTime:160 - Grabbing account 1from Database.
+2020-08-18 15:57:39 INFO  ServiceTime:162 - Account retrieved.
+2020-08-18 15:57:39 INFO  ServiceTime:164 - Withdrawing from account 2
+2020-08-18 15:57:39 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-18 15:57:39 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-18 15:57:39 INFO  ServiceTime:197 - Withdrawal failed.
+2020-08-18 15:57:39 INFO  ServiceTime:383 - Top of Transaction Loop
+2020-08-18 15:57:52 INFO  ServiceTime:409 - Chose Exit Account Transaction
+2020-08-18 15:57:52 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:57:55 INFO  ServiceTime:423 - Chose Existing Accounts
+2020-08-18 15:57:56 INFO  ServiceTime:320 - Enters printAccts method
+2020-08-18 15:57:59 INFO  ServiceTime:354 - Starts top loop.
+2020-08-18 15:58:01 INFO  ServiceTime:505 - Chose Logout
+2020-08-18 15:58:05 INFO  bankPortal:97 - App Closing

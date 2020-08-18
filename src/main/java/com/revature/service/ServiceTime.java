@@ -43,7 +43,7 @@ public class ServiceTime {
 				log.info("No Match.");
 				System.out.println("Your username or password was incorrect, please try again.");
 				System.out.println("(Remember that your information is case-sensitive)");
-				System.out.println("Would you like return to the previous screen? [Y] for yes, else no.");
+				System.out.println("Would you like to return to the previous screen? [Y] for yes, else no.");
 				if(sin.nextLine().toUpperCase().equals("Y")) {
 					log.info("Returning to Opening Screen.");
 					return null;
@@ -58,6 +58,7 @@ public class ServiceTime {
 
 	// Method to signup
 	public User signup(Scanner sin) {
+		log.info("Signup method entered");
 		String check;
 		String potentUse;
 		String potentPass;
@@ -71,13 +72,16 @@ public class ServiceTime {
 			propInput = true;
 			System.out.print("Please enter the username you would like (case-sensitive): ");
 			potentUse = sin.nextLine();
+			log.info("Comparing username...");
 			if (userDAO.userExists(potentUse)) {
+				log.info("Match found.");
 				propInput = false;
 				System.out.println(
 						"Sorry, the username " + potentUse + " is already in use. Please select a different name.");
 
 				System.out.println("Would you like return to the previous screen? [Y] for yes, else no.");
 				if(sin.nextLine().toUpperCase().equals("Y")) {
+					log.info("Returning to opening screen.");
 					return null;
 				}
 			}
@@ -105,25 +109,31 @@ public class ServiceTime {
 		}
 
 		User newbie = new User(potentUse, "C", fName, lName, phoneNum, address);
+		log.info("Creating User and pushing to database.");
 		userDAO.createUser(newbie, potentPass);
 		return newbie;
 	}
 
 	public void callAlter(char action, User curUse, Scanner sin) {
+		log.info("Enters callAlter method.");
 		int amount;
 		int aId;
 		Account to;
 		String actionFull;
 		if(action == 'W') {
+			log.info("Setup for withdrawal.");
 			actionFull = "withdraw";
 		}
 		else if(action == 'D') {
+			log.info("Setup for deposit");
 			actionFull = "deposit";
 		}
 		else if (action == 'T') {
+			log.info("Setup for transfer");
 			actionFull = "transfer";
 		}
 		else {
+			log.warn("How did. You do this. This isn't a valid transaction type.");
 			actionFull = "VERY WRONG";
 		}
 		System.out.println("How much would you like to " + actionFull + "?");
@@ -144,19 +154,27 @@ public class ServiceTime {
 				System.out.println("Invalid account number, please use only numbers");
 				return;
 			}
+			log.info("Checking if account " + aId + " exists.");
 			if (acctDAO.accountExists(aId)) {
+				log.info("Account exists.");
+				log.info("Grabbing account " + aId + "from Database.");
 				to = acctDAO.getAccountByID(aId);
+				log.info("Account retrieved.");
 				// Pull money from current account
-				alterBalance('W', amount, curUse);
-				// Save current account
-				Account from = curUse.getActive();
-				// Change to target account
-				curUse.setActive(to);
-				// Deposit to target account
-				alterBalance('D', amount, curUse);
-				// Revert to original account
-				curUse.setActive(from);
+				log.info("Withdrawing from account " + curUse.getActive().getID());
+				if(alterBalance('W', amount, curUse)) {
+					// Save current account
+					Account from = curUse.getActive();
+					// Change to target account
+					curUse.setActive(to);
+					// Deposit to target account
+					log.info("Depositing to account "+ aId);
+					alterBalance('D', amount, curUse);
+					// Revert to original account
+					curUse.setActive(from);
+				}
 			} else {
+				log.info("Accound doesn't exist.");
 				System.out.println("Account number " + aId + " does not exist");
 			}
 		}
@@ -165,27 +183,35 @@ public class ServiceTime {
 	// Changes the balance of a given account based on user u's active account
 	// based on their permissions
 	public boolean alterBalance(char action, int amount, User curUse) {
+		log.info("Enters alterBalance method.");
 		Account a = curUse.getActive();
 		switch (action) {
 		case 'W':
+			log.info("Withdrawal checks.");
 			if (amount < 0) {
 				System.out.println("Can't withdraw a negative amount");
+				log.info("Withdrawal failed.");
 				return false;
 			} else if (amount > curUse.getActive().getBalance()) {
 				System.out.println("Can't withdraw more money than exists in account");
+				log.info("Withdrawal failed.");
 				return false;
 			}
 			a.setBalance(a.getBalance() - amount);
 			acctDAO.updateAccount(a);
 			break;
 		case 'D':
+			log.info("Deposit checks");
 			if (amount < 0) {
 				System.out.println("Can't deposit a negative amount");
+				log.info("Deposit failed.");
 			}
 			a.setBalance(a.getBalance() + amount);
+			log.info("New balance updated in Database");
 			acctDAO.updateAccount(a);
 			break;
 		default:
+			log.warn("Not a valid transaction type. Seriously, I don't know how you got here, they're HARDCODED.");
 			return false;
 		}
 
@@ -193,6 +219,7 @@ public class ServiceTime {
 	}
 	
 	private void switchAccount(Scanner sin, User curUse) {
+		log.info("Entered switchAccount method");
 		int aId;
 		System.out.println();
 		System.out.println("What account would you like to switch to?");
@@ -203,14 +230,18 @@ public class ServiceTime {
 			return;
 		}
 		if(curUse.getType().equals("C")) {
+			log.info("User is a customer, checking if they have access to account they entered.");
 			if (curUse.getAccts().contains(aId)) {
+				log.info("Grabbing account.");
 				curUse.setActive(acctDAO.getAccountByID(aId));
 			} else {
 				System.out.println("You don't have access to this account");
 			}
 		}
 		else if(curUse.getType().equals("A")){
+			log.info("User is an admin, checking if account exists.");
 			if(acctDAO.accountExists(aId)) {
+				log.info("Grabbing account");
 				curUse.setActive(acctDAO.getAccountByID(aId));
 				System.out.println("Active account set to Account: " + curUse.getActive().getID());
 			}
@@ -219,14 +250,17 @@ public class ServiceTime {
 			}	
 		}
 		else{
+			log.info("User is not an admin Or a customer and should not have access to this method.");
 			System.out.println("You shouldn't even be able to access this I don't know what happened.");
 		}
 	}
 	
 	private void approveDeny(Scanner sin) {
+		log.info("Enters approveDeny method");
 		String check;
 		int aId;
 		boolean loop = true;
+		log.info("Grabs pending accounts from Database.");
 		ArrayList<Account> accounts = acctDAO.getAccountsByStatus("O");
 
 		while(loop) {
@@ -235,30 +269,39 @@ public class ServiceTime {
 				return;
 			}
 			printAccts(accounts);
-			System.out.println("Select Account (enter E to go back)");
+			System.out.println("Select Account (enter [E] to go back)");
 			check = sin.nextLine();
 			if (check.toUpperCase().equals("E")) {
+				log.info("Going back to menu.");
 				loop = false;
 			} else {
+				log.info("Checking entered account is actually a number.");
 				try {
 					aId = Integer.parseInt(check);
 				} catch (NumberFormatException e) {
 					System.out.println("Invalid Account, please use only numbers");
 					return;
 				}
+				log.info("Checking if entered account exists.");
 				if (acctDAO.accountExists(aId)) {
+					log.info("Retrieving account");
 					Account acct = acctDAO.getAccountByID(aId);
+					log.info("Double check account " + aId + " is pending");
 					if (acct.getStatus().equals("O")) {
 						System.out.println(
-								"Would you like to [A] approve this account or [D] Deny this account?");
+								"Would you like to [A] Approve this account or [D] Deny this account?");
 						check = sin.nextLine();
 						if (check.toUpperCase().equals("A")) {
 							acct.setStatus("A");
+							log.info("Updating account status to Approved in Database");
 							acctDAO.updateAccount(acct);
+							log.info("Updating pending accounts list");
 							accounts = acctDAO.getAccountsByStatus("O");
 						} else if (check.toUpperCase().equals("D")) {
 							acct.setStatus("D");
+							log.info("Updating account status to Denied in Database");
 							acctDAO.updateAccount(acct);
+							log.info("Updating pending accounts list");
 							accounts = acctDAO.getAccountsByStatus("O");
 						} else {
 							System.out.println("Invalid action. Returning to Account Selection.");
@@ -274,6 +317,7 @@ public class ServiceTime {
 	}
 
 	private void printAccts(ArrayList<Account> bleh) {
+		log.info("Enters printAccts method");
 		System.out.println();
 		for (Account a : bleh) {
 			System.out.println(a.toString());
@@ -282,6 +326,7 @@ public class ServiceTime {
 	}
 
 	private void printUsers(ArrayList<User> customers) {
+		log.info("Enters printUsers method");
 		System.out.println();
 		for (User u : customers) {
 			System.out.println(u.toString());
@@ -299,12 +344,14 @@ public class ServiceTime {
 	// New Account
 	// Give Account Access
 	public void custMenu(User curUse, Scanner sin) {
+		log.info("Enters custMenu method");
 		String check;
 		boolean propInput = true;
 		boolean loop = true;
 		Account to;
 
 		while (loop) {
+			log.info("Starts top loop.");
 			// base menu
 			System.out.println("CUSTOMER MENU:");
 			System.out.println();
@@ -323,6 +370,8 @@ public class ServiceTime {
 				check = sin.nextLine();
 				switch (check) {
 				case "1": // Account Transactions
+					log.info("Chose Account Transactoins");
+					log.info("Checks if User has chosen an account to perform transactions on, and if that account is active.");
 					if (curUse.getActive() == null) {
 						System.out.println("You have not chosen an account to alter yet, please Switch Accounts first.");
 						break;
@@ -331,6 +380,7 @@ public class ServiceTime {
 						break;
 					}
 					while (loop) {
+						log.info("Top of Transaction Loop");
 						System.out.println();
 						System.out.println("Would you like to ");
 						System.out.println("[1] Withdraw");
@@ -344,15 +394,19 @@ public class ServiceTime {
 							check = sin.nextLine();
 							switch (check) {
 							case "1": // Withdraw
+								log.info("Chose Withdraw");
 								callAlter('W',curUse,sin);
 								break;
 							case "2": // Deposit
+								log.info("Chose Deposit");
 								callAlter('D',curUse,sin);
 								break;
 							case "3": // Transfer
+								log.info("Chose Transfer");
 								callAlter('T',curUse,sin);
 								break;
 							case "4": // Exit Act Trnsctn
+								log.info("Chose Exit Account Transaction");
 								loop = false;
 								break;
 							default: // Invalid Command
@@ -366,20 +420,29 @@ public class ServiceTime {
 					loop = true;
 					break;
 				case "2": // Existing Accounts
+					log.info("Chose Existing Accounts");
 					System.out.println();
 					if(curUse.getAccts().isEmpty()) {
 						System.out.println("You don't have any accounts set up yet.");
 						break;
 					}
-					System.out.println("Accounts you have access to");
-					printAccts(acctDAO.getAccountsByUser(curUse.getName()));
+					ArrayList<Account> accounts = acctDAO.getAccountsByUser(curUse.getName());
+					if(!accounts.isEmpty()) {
+						System.out.println("Accounts you have access to");
+						printAccts(accounts);
+					}
+					else {
+						System.out.println("You don't have any accounts yet");
+					}
 					System.out.println("Press Enter to proceed");
 					sin.nextLine();
 					break;
 				case "3": // Switch Accounts
+					log.info("Chose Switch Accounts");
 					switchAccount(sin, curUse);
 					break;
 				case "4": // New Accounts
+					log.info("Chose New Account");
 					// Ask if solo or joint account
 					System.out.println(
 							"Would you like to create a solo account [S] or a joint account [J]? (Type anything else to exit)");
@@ -420,6 +483,7 @@ public class ServiceTime {
 					}
 					break;
 				case "5": // Give Account Access
+					log.info("Chose Give Account Access");
 					System.out.println();
 					System.out.println("Would you like to give someone else access to account " + curUse.getActive().getID()
 							+ "? [Y] for yes, anything else for no");
@@ -428,7 +492,15 @@ public class ServiceTime {
 						System.out.println("Enter username of user you'd like to give access to.");
 						check = sin.nextLine();
 						// Check if username in User table
+						log.info("Checking if given user exists");
 						if (userDAO.userExists(check)) {
+							if(curUse.getActive().getType().equals("S")) {
+								log.info("Changing account to Joint");
+								curUse.getActive().setType("J");
+								log.info("Updating in Database");
+								acctDAO.updateAccount(curUse.getActive());
+							}
+							log.info("Updating Database to add new relation...");
 							acctDAO.addUserAccess(curUse.getActive(), check);
 						} else {
 							System.out.println("User " + check + " does not exist.");
@@ -436,6 +508,7 @@ public class ServiceTime {
 					}
 					break;
 				case "6": // Logout
+					log.info("Chose Logout");
 					loop = false;
 					break;
 				default: // Invalid Command
@@ -455,6 +528,7 @@ public class ServiceTime {
 	// Account Info (Give Account Number)
 	// Current Applications
 	public void emplMenu(User curUse, Scanner sin) {
+		log.info("Enters emplMenu method");
 		String check;
 		boolean propInput = true;
 		boolean loop = true;
@@ -473,6 +547,7 @@ public class ServiceTime {
 				check = sin.nextLine();
 				switch (check) {
 				case "1":// Customers
+					log.info("Chose Customers");
 					ArrayList<User> users = userDAO.allCustomers();
 					if (!users.isEmpty()) {
 						printUsers(users);
@@ -483,9 +558,11 @@ public class ServiceTime {
 					sin.nextLine();
 					break;
 				case "2":// Applications
+					log.info("Chose Applications");
 					approveDeny(sin);
 					break;
 				case "3":// Logout
+					log.info("Chose Logout");
 					loop = false;
 					break;
 				default:
@@ -508,6 +585,7 @@ public class ServiceTime {
 	// Transfer
 	// Cancel Account (Give Account Number)
 	public void admnMenu(User curUse, Scanner sin) {
+		log.info("Enters admnMenu method");
 		String check;
 		boolean propInput = true;
 		boolean loop = true;
@@ -529,6 +607,7 @@ public class ServiceTime {
 				check = sin.nextLine();
 				switch (check) {
 				case "1":// Customers
+					log.info("Chose Customers");
 					ArrayList<User> users = userDAO.allCustomers();
 					if (!users.isEmpty()) {
 						printUsers(users);
@@ -539,6 +618,8 @@ public class ServiceTime {
 					sin.nextLine();
 					break;
 				case "2"://All Accounts
+					log.info("Chose All Accounts");
+					log.info("Grabbing all accounts from Database");
 					ArrayList<Account> accounts = acctDAO.allAccounts();
 					if(!accounts.isEmpty()) {
 						printAccts(accounts);
@@ -550,9 +631,12 @@ public class ServiceTime {
 					sin.nextLine();
 					break;
 				case "3"://Switch Accounts
+					log.info("Chose Switch Accounts");
 					switchAccount(sin, curUse);
 					break;
 				case "4"://Account Actions
+					log.info("Chose Account Actions");
+					log.info("Checks if User's getActive account");
 					if (curUse.getActive() == null) {
 						System.out.println("You have not chosen an account to alter yet, please Switch Accounts first.");
 						break;
@@ -561,6 +645,7 @@ public class ServiceTime {
 						break;
 					}
 					while (loop) {
+						log.info("Enters Transaction Loop");
 						System.out.println();
 						System.out.println("Would you like to ");
 						System.out.println("[1] Withdraw");
@@ -575,21 +660,27 @@ public class ServiceTime {
 							check = sin.nextLine();
 							switch (check) {
 							case "1": // Withdraw
+								log.info("Chose Withdraw");
 								callAlter('W',curUse,sin);
 								break;
 							case "2": // Deposit
+								log.info("Chose Deposit");
 								callAlter('D',curUse,sin);
 								break;
 							case "3": // Transfer
+								log.info("Chose Transfer");
 								callAlter('T',curUse,sin);
 								break;
 							case "4": //Close Account
+								log.info("Chose Close");
+								log.info("Makes sure account is not already closed.");
 								if(!curUse.getActive().getStatus().equals("C")) {
 									System.out.println("Are you sure you want to close Account " + curUse.getActive().getID() + 
 										"? [Y] for yes, else for no.");
 									check = sin.nextLine().toUpperCase();
 									if(check.equals("Y")) {
 										curUse.getActive().setStatus("C");
+										log.info("Updates account status in Database");
 										acctDAO.updateAccount(curUse.getActive());
 									}
 								}
@@ -598,6 +689,7 @@ public class ServiceTime {
 								}
 								break;
 							case "5": // Exit Act Trnsctn
+								log.info("Chose Exit");
 								loop = false;
 								break;
 							default: // Invalid Command
@@ -611,9 +703,11 @@ public class ServiceTime {
 					loop = true;
 					break;
 				case "5":// Applications
+					log.info("Chose Applications");
 					approveDeny(sin);
 					break;
 				case "6":// Logout
+					log.info("Chose Logout");
 					loop = false;
 					break;
 				default:

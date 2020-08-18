@@ -35,13 +35,11 @@ public class bankPortal {
 				strDec = sin.nextLine();
 				//Proceed to Log-in
 				if(strDec.equals("1")) {
-					log.info("Enters Login");
 					curUse = takeAction.login(sin);
 					log.info("Exits Login");
 				}
 				//Proceed to Sign-up
 				else if(strDec.equals("2")){
-					log.info("Enters Signup");
 					curUse = takeAction.signup(sin);
 					log.info("Exits Signup");
 				}
