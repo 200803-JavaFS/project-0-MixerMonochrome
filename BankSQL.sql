@@ -26,6 +26,46 @@ create table Ownership (
   username varchar(30) not null references Users(username)
 );
 
+CREATE OR REPLACE FUNCTION get_current_time() RETURNS TIME WITH TIME ZONE
+AS $$
+-- curent_time is a built value that is just the current time.  
+SELECT current_time;
+$$ LANGUAGE SQL; 
+
+CREATE OR REPLACE FUNCTION trigger_set_time() RETURNS TRIGGER 
+AS $$
+--Returning a Trigger allows for use of some special varaibles NEW and OLD which represent the 
+--state of the database before and after the event. 
+
+BEGIN
+	NEW.update_at = NOW();
+	RETURN NEW; 
+END;
+$$ LANGUAGE plpgsql; 
+
+
+ALTER TABLE Users ADD COLUMN update_at TIMESTAMP;
+alter table Accounts add column update_at timestamp;
+alter table ownership add column update_at timestamp;
+
+CREATE TRIGGER set_time_u BEFORE UPDATE ON users FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
+CREATE TRIGGER set_time_a BEFORE UPDATE ON accounts FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
+CREATE TRIGGER set_time_o BEFORE UPDATE ON ownership FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
+CREATE TRIGGER set_time_ui BEFORE INSERT ON users FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
+CREATE TRIGGER set_time_ua BEFORE INSERT ON accounts FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
+CREATE TRIGGER set_time_uo BEFORE INSERT ON ownership FOR EACH ROW
+EXECUTE PROCEDURE trigger_set_time();
+
 insert into Users(username, psswrd, first_name, last_name, 
 acct_type, phone_num, address, num_accts)
 values
