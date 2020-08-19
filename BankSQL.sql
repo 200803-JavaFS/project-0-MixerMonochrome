@@ -32,3 +32,13 @@ values
 ('Groot','Groot','Groot','Groot','A',null,null,0),
 ('deputy','snakeinmyboot','Woody','Pride','E','0000000000','Andys house',0),
 ('cuppa','tooEarly','Joe','Schmoe','C','1234567890','113 Coffee Lane',0);
+
+insert into Accounts(acct_type,balance,status)
+values
+('S',292,'A'),
+('S',300,'A');
+
+insert into Ownership(acct_id,username)
+values
+(1,'cuppa'),
+(2,'cuppa');

@@ -135,3 +135,42 @@
 2020-08-18 15:57:59 INFO  ServiceTime:354 - Starts top loop.
 2020-08-18 15:58:01 INFO  ServiceTime:505 - Chose Logout
 2020-08-18 15:58:05 INFO  bankPortal:97 - App Closing
+2020-08-19 08:33:42 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:42 WARN  ServiceTime:214 - Not a valid transaction type. Seriously, I don't know how you got here, they're HARDCODED.
+2020-08-19 08:33:42 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:42 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:33:42 INFO  ServiceTime:197 - Withdrawal failed.
+2020-08-19 08:33:42 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:42 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:33:42 INFO  ServiceTime:193 - Withdrawal failed.
+2020-08-19 08:33:42 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:42 INFO  ServiceTime:204 - Deposit checks
+2020-08-19 08:33:42 INFO  ServiceTime:207 - Deposit failed.
+2020-08-19 08:33:42 INFO  ServiceTime:210 - New balance updated in Database
+2020-08-19 08:33:43 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:43 INFO  ServiceTime:204 - Deposit checks
+2020-08-19 08:33:43 INFO  ServiceTime:210 - New balance updated in Database
+2020-08-19 08:33:43 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:33:43 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:33:44 INFO  ServiceTime:222 - Entered switchAccount method
+2020-08-19 08:33:56 INFO  ServiceTime:242 - User is an admin, checking if account exists.
+2020-08-19 08:33:57 INFO  ServiceTime:244 - Grabbing account
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 WARN  ServiceTime:215 - Not a valid transaction type. Seriously, I don't know how you got here, they're HARDCODED.
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:35:30 INFO  ServiceTime:197 - Withdrawal failed.
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:35:30 INFO  ServiceTime:193 - Withdrawal failed.
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 INFO  ServiceTime:204 - Deposit checks
+2020-08-19 08:35:30 INFO  ServiceTime:207 - Deposit failed.
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 INFO  ServiceTime:204 - Deposit checks
+2020-08-19 08:35:30 INFO  ServiceTime:211 - New balance updated in Database
+2020-08-19 08:35:30 INFO  ServiceTime:186 - Enters alterBalance method.
+2020-08-19 08:35:30 INFO  ServiceTime:190 - Withdrawal checks.
+2020-08-19 08:35:30 INFO  ServiceTime:223 - Entered switchAccount method
+2020-08-19 08:35:36 INFO  ServiceTime:243 - User is an admin, checking if account exists.
+2020-08-19 08:35:37 INFO  ServiceTime:245 - Grabbing account

@@ -77,7 +77,7 @@ public class AccountDAO implements IAccountDAO {
 			String sql = "insert into Accounts (acct_type,balance,status) values ('" + a.getType() + "'," + a.getBalance() + ",'" + a.getStatus() + "') returning acct_id;";
 			Statement statement = conn.createStatement();
 			statement.execute(sql);
-			ResultSet result = statement.getResultSet(); //IF DOESN'T WORK, CHANGE TO .EXECUTE AND .GETRESULTSET
+			ResultSet result = statement.getResultSet();
 			result.next();
 			a.setID(result.getInt("acct_id"));
 			return true;

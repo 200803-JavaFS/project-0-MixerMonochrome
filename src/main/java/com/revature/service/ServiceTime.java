@@ -205,6 +205,7 @@ public class ServiceTime {
 			if (amount < 0) {
 				System.out.println("Can't deposit a negative amount");
 				log.info("Deposit failed.");
+				return false;
 			}
 			a.setBalance(a.getBalance() + amount);
 			log.info("New balance updated in Database");
@@ -218,7 +219,7 @@ public class ServiceTime {
 		return true;
 	}
 	
-	private void switchAccount(Scanner sin, User curUse) {
+	public void switchAccount(Scanner sin, User curUse) {
 		log.info("Entered switchAccount method");
 		int aId;
 		System.out.println();
@@ -255,7 +256,7 @@ public class ServiceTime {
 		}
 	}
 	
-	private void approveDeny(Scanner sin) {
+	public void approveDeny(Scanner sin) {
 		log.info("Enters approveDeny method");
 		String check;
 		int aId;
@@ -316,7 +317,7 @@ public class ServiceTime {
 		}
 	}
 
-	private void printAccts(ArrayList<Account> bleh) {
+	public void printAccts(ArrayList<Account> bleh) {
 		log.info("Enters printAccts method");
 		System.out.println();
 		for (Account a : bleh) {
@@ -325,7 +326,7 @@ public class ServiceTime {
 		System.out.println();
 	}
 
-	private void printUsers(ArrayList<User> customers) {
+	public void printUsers(ArrayList<User> customers) {
 		log.info("Enters printUsers method");
 		System.out.println();
 		for (User u : customers) {
